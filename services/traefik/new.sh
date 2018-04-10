@@ -1,11 +1,11 @@
 #/bin/bash
 
-IMAGE_NAME="fl/meteor:checklist"
+IMAGE_NAME="fl/traefik:1.5"
 
 case "${1}" in
         --build | -b ) docker build --no-cache --rm -t ${IMAGE_NAME} .
         ;;
-        --run | -r ) docker-compose up -d
+        --run | -r ) docker run -d -P -t ${IMAGE_NAME}
         ;;
         --push| -p ) docker push ${IMAGE_NAME}
         ;;

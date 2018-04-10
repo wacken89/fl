@@ -2,8 +2,17 @@ version: '2'
 services:
   meteor:
     image: fl/meteor:checklist
-    ports:
-      - 3000:3000
+    labels:
+      - traefik.backend=checklist
+      - traefik.docker.network=proxy
+      - traefik.frontend.rule=Host:checklist.example.com
+      - traefik.port=3000
+    networks:
+      - internal
+      - proxy
 
-  mongo:
-    image: mongo
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false

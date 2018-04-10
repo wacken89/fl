@@ -1,0 +1,61 @@
+version: '2.2'
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.2.3
+    container_name: kibana
+    labels:
+      traefik.frontend.rule: Host:elastic.example.com
+      traefik.frontend.auth.basic: admin:$$apr1$$naRqBeSB$$0oLv6yLzBJhT/wT2mRIw/.
+      traefik.port: '5601'
+      traefik.backend: kibana
+      traefik.docker.network: proxy
+    networks:
+      - esnet
+      - proxy
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    labels:
+      - traefik.enable=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /docker_storage/elastic/elasticsearch/es1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+    container_name: elasticsearch2
+    environment:
+      - xpack.security.enabled=false
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    labels:
+      - traefik.enable=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /docker_storage/elastic/elasticsearch/es2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+networks:
+  proxy:
+    external: true
+  esnet:
+    external: false

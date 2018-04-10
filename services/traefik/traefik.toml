@@ -1,0 +1,27 @@
+defaultEntryPoints = ["http", "https"]
+
+[accessLog]
+filePath = "/logs/access.log"
+
+
+[web]
+address = ":8000"
+    [web.auth.basic]
+    users = ["traefik:$apr1$8EvWcwpO$RaRFXvDJk6LGQ5tM04RRd0"]
+
+[entryPoints]
+	[entryPoints.http]
+		address = ":80"
+	[entryPoints.https]
+		address = ":443"
+		[entryPoints.https.tls]
+
+
+[acme]
+email = "roman@pridybailo.com"
+storage = "/etc/traefik/acme/acme.json"
+onDemand = true
+OnHostRule = true
+entryPoint = "https"
+  [acme.httpChallenge]
+  entryPoint = "http"

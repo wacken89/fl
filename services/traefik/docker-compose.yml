@@ -1,0 +1,27 @@
+version: '2'
+services:
+  proxy:
+    image: fl/traefik:1.5
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /docker_storage/traefik/logs
+      - /docker_storage/traefik/acme:/etc/traefik/acme
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      - traefik.frontend.rule=Host:monitor.example.com
+      - traefik.port=8080
+    command:
+      - --web
+      - --web.statistics
+      - --web.metrics.prometheus
+      - --web.metrics.prometheus.buckets=0.1,0.3,1.2,5.0
+      - --accesslogsfile=/logs/access.log
+      - --docker
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
