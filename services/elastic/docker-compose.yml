@@ -5,7 +5,7 @@ services:
     container_name: kibana
     labels:
       traefik.frontend.rule: Host:elastic.example.com
-      traefik.frontend.auth.basic: admin:$$apr1$$naRqBeSB$$0oLv6yLzBJhT/wT2mRIw/.
+      traefik.frontend.auth.basic: admin:$$apr1$$LWs0bKwv$$qIvhB8/.HZlsqckvfsg.A/
       traefik.port: '5601'
       traefik.backend: kibana
       traefik.docker.network: proxy

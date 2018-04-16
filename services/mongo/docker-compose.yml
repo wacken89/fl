@@ -1,0 +1,20 @@
+version: '2'
+services:
+  mongo:
+    image: mongo:3.4.2
+    volumes:
+      - /docker_storage/mongo/db:/data/db
+    ports:
+      - 27017:27017
+    command:
+      - mongod
+      - --smallfiles
+    networks:
+      - proxy
+      - internal
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
