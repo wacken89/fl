@@ -7,9 +7,25 @@ services:
       - traefik.docker.network=proxy
       - traefik.frontend.rule=Host:checklist.example.com
       - traefik.port=3000
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/meteor
     networks:
       - internal
       - proxy
+
+  mongo:
+    image: mongo:3.4.2
+    labels:
+      - traefik.enable=false
+    volumes:
+      - /docker_storage/mongo/db:/data/db
+    ports:
+      - 27017:27017
+    command:
+      - mongod
+      - --smallfiles
+    networks:
+      - internal
 
 networks:
   proxy:
