@@ -29,8 +29,6 @@ services:
         hard: -1
     volumes:
       - /docker_storage/elastic/elasticsearch/es1:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
     networks:
       - esnet
 
@@ -67,6 +65,8 @@ services:
       - node.master=false
     labels:
       - traefik.enable=false
+    ports:
+      - 9200:9200
     ulimits:
       memlock:
         soft: -1
