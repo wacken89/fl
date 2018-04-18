@@ -5,7 +5,7 @@ services:
     labels:
       - traefik.backend=checklist
       - traefik.docker.network=proxy
-      - traefik.frontend.rule=Host:checklist.example.com
+      - traefik.frontend.rule=Host:freelanco.xyz
       - traefik.port=3000
     environment:
       - MONGO_URL=mongodb://mongo:27017/meteor
