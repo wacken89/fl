@@ -27,6 +27,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    ports:
+      - 9200:9200
     volumes:
       - /docker_storage/elastic/elasticsearch/es1:/usr/share/elasticsearch/data
     networks:
@@ -49,28 +51,6 @@ services:
         hard: -1
     volumes:
       - /docker_storage/elastic/elasticsearch/es2:/usr/share/elasticsearch/data
-    networks:
-      - esnet
-
-  es-client:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
-    container_name: es-client
-    environment:
-      - xpack.security.enabled=false
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -XX:ParallelGCThreads=1"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch"
-      - node.data=false
-      - node.master=false
-    labels:
-      - traefik.enable=false
-    ports:
-      - 9200:9200
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
     networks:
       - esnet
 
